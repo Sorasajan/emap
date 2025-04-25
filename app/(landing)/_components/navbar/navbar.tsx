@@ -3,7 +3,7 @@ import Image from "next/image";
 import Link from "next/link";
 export default function LandingNavbar() {
   return (
-    <div className="flex justify-between bg-green-600 sticky top-0 items-center px-5">
+    <div className="flex justify-between bg-green-600 sticky top-0 items-center px-5 z-100">
       <Link href="/">
         <div className="px-5 ml-5 flex items-center bg-white gap-2 pr-10">
           <Image src={logo} alt="heritage" height={65} />
@@ -16,9 +16,7 @@ export default function LandingNavbar() {
         </div>
       </Link>
       <div className="flex items-center gap-5">
-        <div>Locations</div>
-        <div>Trip Planner</div>
-        <div>Services</div>
+        <Link href="/downloads">Downloads</Link>
       </div>
     </div>
   );

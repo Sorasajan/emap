@@ -12,7 +12,7 @@ export default function LandingLayout({
   return (
     <div className="flex flex-col min-h-screen text-sm ">
       <LandingNavbar />
-      <div className="flex-1">{children}</div>
+      <div className="flex-1 items-center">{children}</div>
       <MainFooter />
     </div>
   );

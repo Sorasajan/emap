@@ -1,4 +1,5 @@
 import HomeMap from "./_components/map/map";
+import MarkerDetails from "./_components/map/marker";
 
 export default async function LandingHome() {
   // Retrieve environment variables
