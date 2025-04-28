@@ -1,5 +1,5 @@
+import LocationBox from "./_components/map/locationbox";
 import HomeMap from "./_components/map/map";
-import MarkerDetails from "./_components/map/marker";
 
 export default async function LandingHome() {
   // Retrieve environment variables
@@ -37,8 +37,13 @@ export default async function LandingHome() {
     }
 
     return (
-      <div>
-        <HomeMap data={data} />
+      <div className="md:flex">
+        <div className="md:flex-1">
+          <HomeMap data={data} />
+        </div>
+        <div className="w-full md:w-100 overflow-y-auto bg-gray-100 md:h-[calc(100vh-70px)]">
+          <LocationBox data={data} />
+        </div>
       </div>
     );
   } catch (error) {

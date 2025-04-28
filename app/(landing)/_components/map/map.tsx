@@ -79,9 +79,9 @@ export default function HomeMap({ data }) {
     )}`;
 
   return (
-    <div className="min-h-[calc(100vh-70px)]">
+    <div className="h-[calc(100vh-70px)] md:h-full w-full">
       <GoogleMap
-        mapContainerStyle={{ width: "100%", height: "calc(100vh - 75px)" }}
+        mapContainerStyle={{ width: "100%", height: "100%" }}
         center={mapCenter}
         zoom={13}
       >
