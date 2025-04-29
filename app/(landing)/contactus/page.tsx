@@ -7,7 +7,7 @@ export default function ContactUs() {
   return (
     <div>
       <div className="bg-gray-100">
-        <div className="max-w-[1366px] mx-auto">
+        <div className="max-w-[1366px] mx-auto px-5">
           <div className="md:flex justify-between relative ">
             <div className="pt-10 md:pt-20 text-center md:text-left">
               <p className="text-green-600 text-6xl font-semibold">
@@ -20,9 +20,9 @@ export default function ContactUs() {
             <Image
               src={contactus}
               alt="contact us"
-              className="bg-blend-multiply mt-10 md:mt-0"
+              className="bg-blend-multiply mt-10 md:mt-0 w-[30vw]"
             />
-            <div className="md:absolute -bottom-25 flex flex-col md:flex-row items-center  p-5 gap-5 md:gap-20">
+            <div className="md:absolute -bottom-40 2xl:-bottom-25 flex flex-col md:flex-row items-center  p-5 gap-5 md:gap-20">
               <div className="w-90 text-center gap-5 bg-green-200 p-10 rounded-lg flex flex-col justify-center items-center">
                 <FaPhoneAlt className="text-6xl text-green-400" />
                 <p className="text-xl font-semibold">Talk to Sales</p>
