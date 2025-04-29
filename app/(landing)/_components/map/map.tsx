@@ -7,47 +7,85 @@ import {
 } from "@react-google-maps/api";
 import { renderToStaticMarkup } from "react-dom/server";
 import { RiWaterFlashFill } from "react-icons/ri";
-import { useState, useEffect } from "react";
+import { useState, useRef, useEffect } from "react";
+import { useData } from "../context/datacontext";
 
-export default function HomeMap({ data }) {
+const DEFAULT_CENTER = { lat: 27.7172, lng: 85.324 }; // Kathmandu fallback
+
+export default function HomeMap() {
   const { isLoaded } = useLoadScript({
     googleMapsApiKey: process.env.NEXT_PUBLIC_GOOGLE_MAPS_API_KEY as string,
   });
 
+  const { selectedMarker, setSelectedMarker, data } = useData();
   const locations = data?.data?.locations || [];
 
   const [selected, setSelected] = useState(null);
-  const [mapCenter, setMapCenter] = useState({ lat: 27.7172, lng: 85.324 });
+  const [mapCenter, setMapCenter] = useState(DEFAULT_CENTER);
+  const mapRef = useRef<google.maps.Map | null>(null);
 
+  // Load user's location or saved center
   useEffect(() => {
-    // Try to get the user's current location
-    if (navigator.geolocation) {
+    const savedCenter = localStorage.getItem("mapCenter");
+    if (savedCenter) {
+      const parsed = JSON.parse(savedCenter);
+      setMapCenter(parsed);
+    } else {
       navigator.geolocation.getCurrentPosition(
         (position) => {
-          const userLat = position.coords.latitude;
-          const userLng = position.coords.longitude;
-          setMapCenter({ lat: userLat, lng: userLng });
+          setMapCenter({
+            lat: position.coords.latitude,
+            lng: position.coords.longitude,
+          });
         },
         () => {
-          // If location access denied or fails, fallback to average location
-          if (locations.length > 0) {
-            const avgLat =
-              locations.reduce(
-                (sum, loc) => sum + loc.geoLocation.coordinates[0],
-                0
-              ) / locations.length;
-            const avgLng =
-              locations.reduce(
-                (sum, loc) => sum + loc.geoLocation.coordinates[1],
-                0
-              ) / locations.length;
-
-            setMapCenter({ lat: avgLat, lng: avgLng });
-          }
+          console.warn("Geolocation permission denied or unavailable.");
         }
       );
     }
-  }, [locations]);
+  }, []);
+
+  const handleMapLoad = (map: google.maps.Map) => {
+    mapRef.current = map;
+  };
+
+  const handleCenterChanged = () => {
+    if (mapRef.current) {
+      const center = mapRef.current.getCenter();
+      if (center) {
+        const newCenter = {
+          lat: center.lat(),
+          lng: center.lng(),
+        };
+        localStorage.setItem("mapCenter", JSON.stringify(newCenter));
+      }
+    }
+  };
+
+  const handleMarkerClick = (loc: any) => {
+    setSelectedMarker(loc); // context
+    setSelected(loc); // local
+  };
+
+  // Watch for selectedMarker from context and recenter
+  useEffect(() => {
+    if (selectedMarker && mapRef.current) {
+      const position = {
+        lat: selectedMarker.geoLocation.coordinates[0],
+        lng: selectedMarker.geoLocation.coordinates[1],
+      };
+
+      mapRef.current.setZoom(10);
+      mapRef.current.panTo(position);
+
+      setTimeout(() => {
+        mapRef.current?.setZoom(16);
+      }, 300);
+
+      // Show InfoWindow for selected marker
+      setSelected(selectedMarker);
+    }
+  }, [selectedMarker]);
 
   if (!isLoaded) return <div>Loading...</div>;
 
@@ -79,11 +117,13 @@ export default function HomeMap({ data }) {
     )}`;
 
   return (
-    <div className="h-[calc(100vh-70px)] md:h-full w-full">
+    <div className="relative h-[calc(100vh-70px)] md:h-full w-full">
       <GoogleMap
         mapContainerStyle={{ width: "100%", height: "100%" }}
         center={mapCenter}
         zoom={13}
+        onLoad={handleMapLoad}
+        onCenterChanged={handleCenterChanged}
       >
         {locations.map((loc, index) => (
           <Marker
@@ -97,7 +137,7 @@ export default function HomeMap({ data }) {
               url: customIcon(loc.available),
               scaledSize: new window.google.maps.Size(50, 50),
             }}
-            onClick={() => setSelected(loc)}
+            onClick={() => handleMarkerClick(loc)}
           />
         ))}
 
@@ -108,7 +148,7 @@ export default function HomeMap({ data }) {
               lng: selected.geoLocation.coordinates[1],
             }}
             onCloseClick={() => setSelected(null)}
-            options={{ disableAutoPan: true }} // important!
+            options={{ disableAutoPan: true }}
           >
             <div>
               <h2 className="font-bold">{selected.name}</h2>

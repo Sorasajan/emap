@@ -27,6 +27,8 @@ interface DataContextType {
   data: ApiData | null;
   isLoading: boolean;
   isError: boolean;
+  selectedMarker: Location | null;
+  setSelectedMarker: (marker: Location | null) => void; // Add setter for selectedMarker
 }
 
 interface DataProviderProps {
@@ -87,6 +89,7 @@ export const DataProvider = ({ children }: DataProviderProps) => {
   });
 
   const [errorState, setErrorState] = useState<string | null>(null);
+  const [selectedMarker, setSelectedMarker] = useState<Location | null>(null); // State for selected marker
 
   // Memoize the context value to prevent unnecessary re-renders
   const contextValue: DataContextType = useMemo(() => {
@@ -94,8 +97,10 @@ export const DataProvider = ({ children }: DataProviderProps) => {
       data,
       isLoading,
       isError: !!error || !!errorState,
+      selectedMarker, // Provide selectedMarker to the context
+      setSelectedMarker, // Provide setter to update selectedMarker
     };
-  }, [data, isLoading, error, errorState]);
+  }, [data, isLoading, error, errorState, selectedMarker]);
 
   useEffect(() => {
     // Store error state to avoid triggering re-renders on repeated errors
