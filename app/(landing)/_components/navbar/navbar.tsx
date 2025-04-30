@@ -8,25 +8,6 @@ import NavItems from "./navitems";
 export default function LandingNavbar() {
   const [isNav, setIsNav] = useState(false);
 
-  const navitems = [
-    {
-      navitem: "Locations",
-      navlink: "/locations",
-    },
-    {
-      navitem: "EMI Calculator",
-      navlink: "/emi_calculator",
-    },
-    {
-      navitem: "Download",
-      navlink: "/downloads",
-    },
-    {
-      navitem: "Contact Us",
-      navlink: "/contactus",
-    },
-  ];
-
   return (
     <div className="md:flex justify-between bg-white shadow-xs sticky top-0 items-center px-5 pl-0 md:pl-5 z-100 ">
       <div className="flex justify-between items-center">

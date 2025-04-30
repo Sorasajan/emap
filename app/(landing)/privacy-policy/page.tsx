@@ -8,16 +8,18 @@ export default function Privacy() {
         <span className="font-semibold">Effective Date : </span> 24 April, 2025
       </p>
       <p>
-        <span className="font-semibold">App Name : </span> App Name
+        <span className="font-semibold">App Name : </span> Heritage Charge Point
       </p>
-      <p>
+      {/* <p>
         <span className="font-semibold">WebApp Link : </span> Link
+      </p> */}
+      <p>
+        <span className="font-semibold">Company Name : </span> Heritage Charge
+        Point Pvt ltd
       </p>
       <p>
-        <span className="font-semibold">Company Name : </span> Company Name
-      </p>
-      <p>
-        <span className="font-semibold">Location : </span> address
+        <span className="font-semibold">Location : </span> Shankhamul ,kathmandu
+        -10
       </p>
 
       <p>
@@ -512,9 +514,9 @@ export default function Privacy() {
         How to Exercise Your Rights
       </h1>
       <p>
-        To exercise any of these rights, please contact us at [Your Contact
-        Information]. We will respond to your request in accordance with
-        applicable laws and within a reasonable timeframe.
+        To exercise any of these rights, please contact us at
+        contact@heritagechargepoint.com. We will respond to your request in
+        accordance with applicable laws and within a reasonable timeframe.
       </p>
       <h1 className="font-semibold text-base mt-5">
         Change to this Privacy Policy

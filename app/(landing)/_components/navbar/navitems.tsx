@@ -1,63 +1,75 @@
 import Link from "next/link";
 import { useData } from "../context/datacontext";
 import { MdArrowDropDownCircle } from "react-icons/md";
+import React from "react";
+import { Location } from "@/app/(landing)/_components/types/location";
 
-export default function NavItems({ isNav }) {
-  const navitems = [
-    {
-      navitem: "EMI Calculator",
-      navlink: "/emi_calculator",
-    },
-    {
-      navitem: "Download",
-      navlink: "/downloads",
-    },
-    {
-      navitem: "Contact Us",
-      navlink: "/contactus",
-    },
-  ];
+interface NavItemsProps {
+  isNav: boolean;
+}
 
-  const data = useData();
+interface NavItem {
+  navitem: string;
+  navlink: string;
+}
 
-  const locations = data?.data?.data?.locations;
+export default function NavItems({ isNav }: NavItemsProps) {
+  const { data } = useData();
+  const locations: Location[] = Array.isArray(data?.data) ? data.data : [];
 
+  // Get unique states based on address.state
   const uniqueLocations = Array.from(
-    new Map(locations.map((item) => [item.state, item])).values()
+    new Map(locations.map((item) => [item.address.state, item])).values()
   );
 
+  const navitems: NavItem[] = [
+    { navitem: "EMI Calculator", navlink: "/emi_calculator" },
+    { navitem: "Download", navlink: "/downloads" },
+    { navitem: "Contact Us", navlink: "/contactus" },
+  ];
+
   return (
-    <div
-      className={`md:flex md:flex-row md:items-center gap-5 ${
+    <nav
+      className={`${
         isNav ? "flex flex-col p-5" : "hidden"
-      }`}
+      } md:flex md:flex-row md:items-center gap-5`}
     >
+      {/* Locations Dropdown */}
       <div className="relative group">
-        <div className="flex gap-2 items-center py-2 md:px-5 group-hover:border-b border-green-500 group-hover:text-green-600 font-semibold">
+        <button
+          type="button"
+          className="flex gap-2 items-center py-2 md:px-5 font-semibold group-hover:text-green-600 group-hover:border-b border-green-500 transition-colors"
+          aria-haspopup="true"
+        >
           Locations
-          <MdArrowDropDownCircle className="text-lg group-hover:rotate-180 transition-all duration-300" />
-        </div>
-        <div className="md:absolute max-h-0 overflow-hidden shadow-xs group-hover:max-h-500 top-15 left-0 bg-gray-200 flex flex-col w-50 transition-all duration-500">
-          {uniqueLocations.map((item, i) => (
+          <MdArrowDropDownCircle className="text-lg group-hover:rotate-180 transition-transform duration-300" />
+        </button>
+        <div
+          className="absolute top-full left-0 w-52 bg-gray-200 shadow-md overflow-auto max-h-60 opacity-0 group-hover:opacity-100 pointer-events-none group-hover:pointer-events-auto transition-all duration-300 z-10"
+          role="menu"
+        >
+          {uniqueLocations.map((item, index) => (
             <div
-              key={i}
-              className="border border-gray-50 p-4 hover:bg-green-500 hover:text-white hover:scale-95 transition-all duration-500"
+              key={index}
+              className="border border-gray-100 p-3 hover:bg-green-500 hover:text-white hover:scale-95 transition-all duration-300"
+              role="menuitem"
             >
-              {item.state}
+              {item.address.state}
             </div>
           ))}
         </div>
       </div>
-      {navitems.map((item, i) => (
-        <div key={i}>
-          <Link
-            href={item.navlink}
-            className="py-2 md:px-5 hover:border-b border-green-500 hover:text-green-600 font-semibold"
-          >
-            {item.navitem}
-          </Link>
-        </div>
+
+      {/* Static Nav Items */}
+      {navitems.map((item, index) => (
+        <Link
+          key={index}
+          href={item.navlink}
+          className="py-2 md:px-5 hover:border-b border-green-500 hover:text-green-600 font-semibold transition-colors"
+        >
+          {item.navitem}
+        </Link>
       ))}
-    </div>
+    </nav>
   );
 }

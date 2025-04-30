@@ -1,4 +1,5 @@
 "use client";
+
 import {
   GoogleMap,
   Marker,
@@ -9,6 +10,8 @@ import { renderToStaticMarkup } from "react-dom/server";
 import { RiWaterFlashFill } from "react-icons/ri";
 import { useState, useRef, useEffect } from "react";
 import { useData } from "../context/datacontext";
+import { TbGpsFilled } from "react-icons/tb";
+import { Location } from "@/app/(landing)/_components/types/location";
 
 const DEFAULT_CENTER = { lat: 27.7172, lng: 85.324 }; // Kathmandu fallback
 
@@ -18,9 +21,11 @@ export default function HomeMap() {
   });
 
   const { selectedMarker, setSelectedMarker, data } = useData();
-  const locations = data?.data?.locations || [];
 
-  const [selected, setSelected] = useState(null);
+  // Ensure that data is an array of Location or fallback to an empty array
+  const locations: Location[] = Array.isArray(data) ? data : [];
+
+  const [selected, setSelected] = useState<Location | null>(null);
   const [mapCenter, setMapCenter] = useState(DEFAULT_CENTER);
   const mapRef = useRef<google.maps.Map | null>(null);
 
@@ -62,17 +67,16 @@ export default function HomeMap() {
     }
   };
 
-  const handleMarkerClick = (loc: any) => {
-    setSelectedMarker(loc); // context
-    setSelected(loc); // local
+  const handleMarkerClick = (loc: Location) => {
+    setSelectedMarker(loc);
+    setSelected(loc);
   };
 
-  // Watch for selectedMarker from context and recenter
   useEffect(() => {
     if (selectedMarker && mapRef.current) {
       const position = {
-        lat: selectedMarker.geoLocation.coordinates[0],
-        lng: selectedMarker.geoLocation.coordinates[1],
+        lat: selectedMarker["Maps details"].coordinates[0],
+        lng: selectedMarker["Maps details"].coordinates[1],
       };
 
       mapRef.current.setZoom(10);
@@ -82,7 +86,6 @@ export default function HomeMap() {
         mapRef.current?.setZoom(16);
       }, 300);
 
-      // Show InfoWindow for selected marker
       setSelected(selectedMarker);
     }
   }, [selectedMarker]);
@@ -125,34 +128,58 @@ export default function HomeMap() {
         onLoad={handleMapLoad}
         onCenterChanged={handleCenterChanged}
       >
-        {locations.map((loc, index) => (
-          <Marker
-            key={index}
-            position={{
-              lat: loc.geoLocation.coordinates[0],
-              lng: loc.geoLocation.coordinates[1],
-            }}
-            title={loc.name || `Location ${index + 1}`}
-            icon={{
-              url: customIcon(loc.available),
-              scaledSize: new window.google.maps.Size(50, 50),
-            }}
-            onClick={() => handleMarkerClick(loc)}
-          />
-        ))}
+        {locations.map((loc, index) => {
+          const coordinates = loc["Maps details"]?.coordinates;
+          if (!coordinates) return null;
+
+          return (
+            <Marker
+              key={index}
+              position={{
+                lat: coordinates[0],
+                lng: coordinates[1],
+              }}
+              title={loc["Name of the location"] || `Location ${index + 1}`}
+              icon={{
+                url: customIcon(loc.available),
+                scaledSize: new window.google.maps.Size(50, 50),
+              }}
+              onClick={() => handleMarkerClick(loc)}
+            />
+          );
+        })}
 
         {selected && (
           <InfoWindow
             position={{
-              lat: selected.geoLocation.coordinates[0],
-              lng: selected.geoLocation.coordinates[1],
+              lat: selected["Maps details"].coordinates[0],
+              lng: selected["Maps details"].coordinates[1],
             }}
             onCloseClick={() => setSelected(null)}
             options={{ disableAutoPan: true }}
           >
-            <div>
-              <h2 className="font-bold">{selected.name}</h2>
-              <div className="flex justify-center items-center gap-2">
+            <div className="w-[20vw]">
+              <h2 className="font-semibold text-xl text-center">
+                {selected["Name of the location"]}
+              </h2>
+              <hr className="border border-gray-100 my-5" />
+              <div className="text-center leading-6 flex gap-5 justify-between items-center px-5">
+                <div>
+                  <p className="text-base">
+                    {selected.address.street1}
+                    {selected.address.street2 &&
+                      `, ${selected.address.street2}`}
+                  </p>
+                  <p>
+                    {selected.address.city}, {selected.address.state}
+                  </p>
+                </div>
+                <div>
+                  <TbGpsFilled className="text-4xl hover:scale-110 transition-all duration-500" />
+                </div>
+              </div>
+              {selected["Contact No"] && <div>{selected["Contact No"]}</div>}
+              <div className="flex justify-center items-center gap-2 mt-2">
                 <div
                   className={`block w-2 h-2 rounded-full ${
                     selected.available ? "bg-green-500" : "bg-red-500"
