@@ -51,10 +51,10 @@ const fetcher = async (url: string): Promise<ApiData> => {
       );
     }
 
-    // // Sort locations by 'Name of the location'
-    // data.sort((a, b) =>
-    //   a["Name of the location"].localeCompare(b["Name of the location"])
-    // );
+    // Sort locations by 'Name of the location'
+    data.sort((a, b) =>
+      a["Name of the location"].localeCompare(b["Name of the location"])
+    );
 
     return data;
   } catch (error: unknown) {

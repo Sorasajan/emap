@@ -120,7 +120,7 @@ export default function HomeMap() {
     )}`;
 
   return (
-    <div className="relative h-[calc(100vh-70px)] md:h-full w-full">
+    <div className="relative h-[calc(100vh-70px)] lg:h-full w-full">
       <GoogleMap
         mapContainerStyle={{ width: "100%", height: "100%" }}
         center={mapCenter}
@@ -158,7 +158,7 @@ export default function HomeMap() {
             onCloseClick={() => setSelected(null)}
             options={{ disableAutoPan: true }}
           >
-            <div className="w-[20vw]">
+            <div className="lg:w-[20vw]">
               <h2 className="font-semibold text-xl text-center">
                 {selected["Name of the location"]}
               </h2>
@@ -178,7 +178,15 @@ export default function HomeMap() {
                   <TbGpsFilled className="text-4xl hover:scale-110 transition-all duration-500" />
                 </div>
               </div>
-              {selected["Contact No"] && <div>{selected["Contact No"]}</div>}
+              <div className="w-full text-center p-5 font-semibold text-base">
+                Contact No. {selected["Contact No"]}
+              </div>
+              {selected["Name of the charger"]}
+              <div>
+                {selected["Plugs details"].map((item, i) => (
+                  <div key={i}>plug</div>
+                ))}
+              </div>
               <div className="flex justify-center items-center gap-2 mt-2">
                 <div
                   className={`block w-2 h-2 rounded-full ${

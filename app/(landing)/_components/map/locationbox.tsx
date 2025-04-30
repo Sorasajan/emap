@@ -3,6 +3,9 @@ import Link from "next/link";
 import { GiElectricalSocket } from "react-icons/gi";
 import { useData } from "../context/datacontext";
 import { Location } from "@/app/(landing)/_components/types/location";
+import { PiSlideshowFill } from "react-icons/pi";
+import { useEffect, useState } from "react";
+import { FaGripLinesVertical } from "react-icons/fa";
 
 export default function LocationBox() {
   const { data, setSelectedMarker } = useData();
@@ -12,15 +15,59 @@ export default function LocationBox() {
     setSelectedMarker(location);
   };
 
+  const [sidebar, setSidebar] = useState(true);
+
+  useEffect(() => {
+    const mediaQuery = window.matchMedia("(min-width: 1280px)");
+
+    const handleResize = (e: MediaQueryListEvent) => {
+      setSidebar(e.matches); // true if lg or above
+    };
+
+    // Set initial state
+    setSidebar(mediaQuery.matches);
+
+    // Add listener
+    mediaQuery.addEventListener("change", handleResize);
+
+    return () => mediaQuery.removeEventListener("change", handleResize);
+  }, []);
+
   return (
-    <div>
-      <div className="sticky top-0 bg-white right-0 p-5 z-1">
-        <input
-          className="w-full border border-black rounded-lg p-2 bg-white"
-          placeholder="Search Location"
-        />
+    <div className={sidebar ? "w-fit" : "w-0 overflow-hidden"}>
+      <div
+        className={`right-0 p-5 z-1 flex gap-5 items-center ${
+          sidebar
+            ? "sticky top-0 bg-white "
+            : "absolute bottom-1/2 translate-y-1/2 right-0 rounded-l-full h-50 bg-black text-white"
+        }`}
+      >
+        {sidebar ? (
+          <input
+            className="w-full border border-black rounded-lg p-2 bg-white flex-1"
+            placeholder="Search Location"
+          />
+        ) : (
+          ""
+        )}
+        {sidebar ? (
+          <FaGripLinesVertical
+            className="text-2xl cursor-pointer"
+            onClick={() => setSidebar(false)}
+          />
+        ) : (
+          <PiSlideshowFill
+            className="text-3xl cursor-pointer"
+            onClick={() => setSidebar(true)}
+          />
+        )}
       </div>
-      <div className="p-5 text-sm flex overflow-x-auto md:flex-col gap-5">
+
+      <div
+        className={`p-5 text-sm  overflow-x-auto lg:flex-col gap-5 ${
+          sidebar ? "flex" : "hidden"
+        }`}
+      >
         {locations.map((item, i) => {
           const plugs = item?.["Plugs details"] || [];
           return (
