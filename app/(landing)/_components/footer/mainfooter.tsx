@@ -6,7 +6,7 @@ export default function MainFooter() {
   const year = new Date().getFullYear();
 
   return (
-    <footer className="bg-green-600 text-white py-10 px-4">
+    <footer className="bg-slate-900 text-white py-10 px-4">
       <div className="max-w-5xl mx-auto flex flex-col items-center text-center space-y-6">
         <Image
           src={logo}
