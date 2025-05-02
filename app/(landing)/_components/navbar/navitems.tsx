@@ -15,7 +15,7 @@ interface NavItem {
 
 export default function NavItems({ isNav }: NavItemsProps) {
   const { data } = useData();
-  const locations: Location[] = Array.isArray(data?.data) ? data.data : [];
+  const locations: Location[] = Array.isArray(data) ? data : [];
 
   // Get unique states based on address.state
   const uniqueLocations = Array.from(
