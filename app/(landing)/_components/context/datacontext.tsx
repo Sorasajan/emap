@@ -14,14 +14,16 @@ import { Location } from "@/app/(landing)/_components/types/location";
 
 interface ApiData {
   message: string;
-  data: Location;
+  data: Location[];
 }
 
 interface DataContextType {
-  data: ApiData | null;
+  data: Location[] | null;
   isLoading: boolean;
   isError: boolean;
   selectedMarker: Location | null;
+  searchLocation: string;
+  setSearchLocation: (value: string) => void;
   setSelectedMarker: (marker: Location | null) => void;
 }
 
@@ -42,7 +44,6 @@ const fetcher = async (url: string): Promise<ApiData> => {
     }
 
     const data: ApiData = await response.json();
-    console.log(data);
 
     // Validate the data structure
     if (!data || !Array.isArray(data)) {
@@ -67,12 +68,6 @@ const fetcher = async (url: string): Promise<ApiData> => {
 const url = process.env.NEXT_PUBLIC_API_URL;
 const auth_token = process.env.NEXT_PUBLIC_AUTH_TOKEN;
 
-if (!url || !auth_token) {
-  throw new Error(
-    "API_URL or AUTH_TOKEN is not defined in environment variables"
-  );
-}
-
 // Create context
 const DataContext = createContext<DataContextType | undefined>(undefined);
 
@@ -85,6 +80,7 @@ export const DataProvider = ({ children }: DataProviderProps) => {
   });
 
   const [selectedMarker, setSelectedMarker] = useState<Location | null>(null);
+  const [searchLocation, setSearchLocation] = useState<string>("");
 
   const contextValue: DataContextType = useMemo(
     () => ({
@@ -92,6 +88,8 @@ export const DataProvider = ({ children }: DataProviderProps) => {
       isLoading,
       isError: !!error,
       selectedMarker,
+      searchLocation,
+      setSearchLocation,
       setSelectedMarker,
     }),
     [data, isLoading, error, selectedMarker]

@@ -18,12 +18,19 @@ export default function Locations() {
 
   const id = params.location;
 
-  const data = useData();
+  const { data } = useData();
 
-  const locations = data?.data?.data?.locations;
+  const location = data?.find((item) => item._id === id);
+  console.log(location);
 
-  const location = locations.find((item) => item.locationId === Number(id));
-
+  // Check if location is not found
+  if (!location) {
+    return (
+      <div className="text-center mt-20">
+        <h2>Location not found</h2>
+      </div>
+    );
+  }
   return (
     <div>
       <div className="relative w-full h-160 flex justify-center items-end">
@@ -31,9 +38,9 @@ export default function Locations() {
         <div className="bg-black/50 text-white h-full flex flex-col items-center justify-between p-5 py-15 text-3xl font-bold px-10 w-full leading-18">
           <FaMapLocationDot className="h-40 w-40" />
           <div className="text-center ">
-            {location.name}
+            {location["Name of the location"]}
             <p className="text-base font-light">
-              {location.street1}, {location.street2}
+              {location.address.street1}, {location.address.street2}
             </p>
             <p className="text-xs font-light">
               15KM Away from your current location.

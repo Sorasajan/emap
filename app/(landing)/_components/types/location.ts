@@ -1,6 +1,7 @@
 // app/types/location.ts
 export interface Location {
   locationId: string;
+  _id: string;
   "Name of the location": string;
   "Name of the charger": string;
   "Contact No": string;
