@@ -14,13 +14,12 @@ export default function LocationBox() {
 
   const [sidebar, setSidebar] = useState(true);
 
-  // Immediately update search location on keydown
-  const handleKeyDown = (e: React.KeyboardEvent<HTMLInputElement>) => {
-    setSearchLocation(e.currentTarget.value);
+  // Immediately update search location on change
+  const handleChange = (e: React.ChangeEvent<HTMLInputElement>) => {
+    setSearchLocation(e.target.value);
   };
 
   useEffect(() => {
-    // If debounced search changes, perform filtering
     const mediaQuery = window.matchMedia("(min-width: 1280px)");
 
     const handleResize = (e: MediaQueryListEvent) => {
@@ -73,7 +72,7 @@ export default function LocationBox() {
             className="w-full border border-black rounded-lg p-2 bg-white flex-1"
             placeholder="Search Location"
             autoComplete="off"
-            onKeyDown={handleKeyDown} // Change to onKeyDown for immediate search
+            onChange={handleChange} // Change to onChange for immediate search
           />
         ) : null}
 
@@ -101,12 +100,21 @@ export default function LocationBox() {
           return (
             <div
               key={item.locationId || i}
-              className="bg-white w-full p-5 leading-6 flex-shrink-0 hover:scale-95 hover:bg-green-50 transition-all duration-500 cursor-pointer"
+              className="bg-white w-full relative p-5 leading-6 flex-shrink-0 hover:scale-95 hover:bg-green-50 transition-all duration-500 cursor-pointer"
               onClick={() => handleSelectLocation(item)}
             >
-              <p className="text-lg font-semibold">
-                {item["Name of the location"]}
-              </p>
+              <div className="gap-5 justify-between items-center">
+                <p className="text-lg font-semibold">
+                  {item["Name of the location"]}
+                </p>
+                <div
+                  className={`px-2 rounded-b-xl text-white absolute top-0 right-1 ${
+                    item.available ? "bg-blue-600" : "bg-red-600"
+                  }`}
+                >
+                  {item.available ? "Available" : "Not Available"}
+                </div>
+              </div>
               <p className="italic text-gray-400">
                 {item.address.street1}
                 {item.address.street2 ? `, ${item.address.street2}` : ""}
@@ -124,11 +132,7 @@ export default function LocationBox() {
               {plugs.map((plug: any, i: number) => (
                 <p
                   key={i}
-                  className={`flex items-center text-xs justify-between mt-2 ${
-                    plug.connectorStatus === "Available"
-                      ? "text-green-500"
-                      : "text-red-500"
-                  }`}
+                  className="flex items-center text-xs justify-between mt-2"
                 >
                   <span className="flex gap-2 items-center">
                     <GiElectricalSocket className="rounded-full text-xl" />
@@ -136,12 +140,7 @@ export default function LocationBox() {
                       {plug.physicalReference} ({plug.maxOutputPower} KW)
                     </span>
                   </span>
-                  <span>
-                    Charging Plug{" "}
-                    {plug.connectorStatus === "Available"
-                      ? "Available"
-                      : "Not Available"}
-                  </span>
+                  <span>Charging Plug {plug.connectorStatus}</span>
                 </p>
               ))}
 
@@ -152,9 +151,14 @@ export default function LocationBox() {
                 >
                   Get Details
                 </Link>
-                <div className="p-2 px-5 border border-black text-center bg-black text-white hover:scale-[.95] transition-all duration-500">
+                <Link
+                  href={`https://www.google.com/maps/dir/?api=1&destination=${item["Maps details"].coordinates[0]},${item["Maps details"].coordinates[1]}`}
+                  target="_blank"
+                  rel="noopener noreferrer"
+                  className="p-2 px-5 border border-black text-center bg-black text-white hover:scale-[.95] transition-all duration-500"
+                >
                   Get Direction
-                </div>
+                </Link>
               </div>
             </div>
           );

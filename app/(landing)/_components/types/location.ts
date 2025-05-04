@@ -5,6 +5,7 @@ export interface Location {
   "Name of the location": string;
   "Name of the charger": string;
   "Contact No": string;
+  amenities: [];
   address: {
     street1: string;
     street2: string;

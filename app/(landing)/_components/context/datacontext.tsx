@@ -7,15 +7,8 @@ import React, {
   useMemo,
   useState,
   useEffect,
-  useRef,
 } from "react";
-import useSWR from "swr";
 import { Location } from "@/app/(landing)/_components/types/location";
-
-interface ApiData {
-  message: string;
-  data: Location[];
-}
 
 interface DataContextType {
   data: Location[] | null;
@@ -31,72 +24,76 @@ interface DataProviderProps {
   children: ReactNode;
 }
 
-const fetcher = async (url: string): Promise<ApiData> => {
-  try {
-    const response = await fetch(url, {
-      headers: {
-        Authorization: `${auth_token}`,
-      },
-    });
+const url = process.env.NEXT_PUBLIC_API_URL!;
+const auth_token = process.env.NEXT_PUBLIC_AUTH_TOKEN!;
 
-    if (!response.ok) {
-      throw new Error(`Failed to fetch data: ${response.statusText}`);
-    }
-
-    const data: ApiData = await response.json();
-
-    // Validate the data structure
-    if (!data || !Array.isArray(data)) {
-      throw new Error(
-        "Invalid data structure: 'data.locations' is missing or not an array"
-      );
-    }
-
-    // Sort locations by 'Name of the location'
-    data.sort((a, b) =>
-      a["Name of the location"].localeCompare(b["Name of the location"])
-    );
-
-    return data;
-  } catch (error: unknown) {
-    const message = error instanceof Error ? error.message : "Unknown error";
-    throw new Error(`Error fetching data: ${message}`);
-  }
-};
-
-// Environment variables
-const url = process.env.NEXT_PUBLIC_API_URL;
-const auth_token = process.env.NEXT_PUBLIC_AUTH_TOKEN;
-
-// Create context
 const DataContext = createContext<DataContextType | undefined>(undefined);
 
-// Provider
 export const DataProvider = ({ children }: DataProviderProps) => {
-  const { data, error, isLoading } = useSWR<ApiData>(url, fetcher, {
-    refreshInterval: 5000,
-    revalidateOnFocus: false,
-    shouldRetryOnError: false,
-  });
-
+  const [data, setData] = useState<Location[] | null>(null);
+  const [isLoading, setIsLoading] = useState(true);
+  const [isError, setIsError] = useState(false);
   const [selectedMarker, setSelectedMarker] = useState<Location | null>(null);
   const [searchLocation, setSearchLocation] = useState<string>("");
 
+  useEffect(() => {
+    const fetchData = async () => {
+      setIsLoading(true);
+      setIsError(false);
+
+      try {
+        const response = await fetch(url, {
+          headers: {
+            Authorization: `${auth_token}`,
+          },
+        });
+
+        if (!response.ok) {
+          throw new Error(`Failed to fetch data: ${response.statusText}`);
+        }
+
+        const result = await response.json();
+
+        // Accept either { data: Location[] } or plain Location[]
+        const locations = Array.isArray(result) ? result : result.data;
+
+        if (!Array.isArray(locations)) {
+          throw new Error(
+            "Invalid data structure: expected array of locations"
+          );
+        }
+
+        const sorted = locations.sort((a, b) =>
+          a["Name of the location"].localeCompare(b["Name of the location"])
+        );
+
+        setData(sorted);
+      } catch (error) {
+        console.error(error);
+        setIsError(true);
+      } finally {
+        setIsLoading(false);
+      }
+    };
+
+    fetchData();
+  }, []);
+
   const contextValue: DataContextType = useMemo(
     () => ({
-      data: data ?? null,
+      data,
       isLoading,
-      isError: !!error,
+      isError,
       selectedMarker,
       searchLocation,
       setSearchLocation,
       setSelectedMarker,
     }),
-    [data, isLoading, error, selectedMarker]
+    [data, isLoading, isError, selectedMarker, searchLocation]
   );
 
   if (isLoading) return <div>Loading...</div>;
-  if (error) return <div>Error fetching data: {error.message}</div>;
+  if (isError) return <div>Error fetching data</div>;
   if (!data) return <div>No data available</div>;
 
   return (
@@ -104,7 +101,6 @@ export const DataProvider = ({ children }: DataProviderProps) => {
   );
 };
 
-// Custom hook
 export const useData = (): DataContextType => {
   const context = useContext(DataContext);
   if (!context) {

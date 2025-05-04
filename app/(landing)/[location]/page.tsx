@@ -4,6 +4,7 @@ import { useParams } from "next/navigation";
 import { useData } from "../_components/context/datacontext";
 import details from "@/public/details.jpg";
 import Image from "next/image";
+import { useEffect, useState } from "react";
 import { FaParking, FaRestroom, FaToilet, FaWifi } from "react-icons/fa";
 import { GrRestaurant } from "react-icons/gr";
 import {
@@ -12,18 +13,56 @@ import {
   MdLocalHotel,
 } from "react-icons/md";
 import { FaMapLocationDot } from "react-icons/fa6";
+import { RiChargingPile2Fill } from "react-icons/ri";
+
+function getDistanceFromLatLonInKm(
+  lat1: number,
+  lon1: number,
+  lat2: number,
+  lon2: number
+): number {
+  const R = 6371; // Radius of the Earth in km
+  const dLat = ((lat2 - lat1) * Math.PI) / 180;
+  const dLon = ((lon2 - lon1) * Math.PI) / 180;
+  const a =
+    Math.sin(dLat / 2) * Math.sin(dLat / 2) +
+    Math.cos((lat1 * Math.PI) / 180) *
+      Math.cos((lat2 * Math.PI) / 180) *
+      Math.sin(dLon / 2) *
+      Math.sin(dLon / 2);
+  const c = 2 * Math.atan2(Math.sqrt(a), Math.sqrt(1 - a));
+  return R * c;
+}
 
 export default function Locations() {
   const params = useParams();
-
-  const id = params.location;
+  const id = Array.isArray(params.location)
+    ? params.location[0]
+    : params.location;
 
   const { data } = useData();
-
   const location = data?.find((item) => item._id === id);
-  console.log(location);
+  console.log(data);
 
-  // Check if location is not found
+  const [distance, setDistance] = useState<number | null>(null);
+
+  useEffect(() => {
+    if (location?.["Maps details"]?.coordinates) {
+      const [lat2, lon2] = location["Maps details"].coordinates;
+      navigator.geolocation.getCurrentPosition(
+        (pos) => {
+          const lat1 = pos.coords.latitude;
+          const lon1 = pos.coords.longitude;
+          const dist = getDistanceFromLatLonInKm(lat1, lon1, lat2, lon2);
+          setDistance(dist);
+        },
+        (err) => {
+          console.error("Geolocation error:", err);
+        }
+      );
+    }
+  }, [location]);
+
   if (!location) {
     return (
       <div className="text-center mt-20">
@@ -31,9 +70,10 @@ export default function Locations() {
       </div>
     );
   }
+
   return (
     <div>
-      <div className="relative w-full h-160 flex justify-center items-end">
+      <div className="relative w-full h-[40rem] flex justify-center items-end">
         <Image src={details} alt="details" fill className="object-cover -z-1" />
         <div className="bg-black/50 text-white h-full flex flex-col items-center justify-between p-5 py-15 text-3xl font-bold px-10 w-full leading-18">
           <FaMapLocationDot className="h-40 w-40" />
@@ -43,11 +83,13 @@ export default function Locations() {
               {location.address.street1}, {location.address.street2}
             </p>
             <p className="text-xs font-light">
-              15KM Away from your current location.
+              {distance
+                ? `${distance.toFixed(2)} KM Away from your current location.`
+                : "Distance unavailable"}
             </p>
           </div>
 
-          <div className="flex gap-5 mt-30 pb-10">
+          <div className="flex gap-5 mt-8 pb-10">
             <FaWifi />
             <FaParking />
             <FaRestroom />
@@ -59,17 +101,36 @@ export default function Locations() {
       </div>
 
       <div className="mt-10 max-w-[1366px] mx-auto p-5 flex flex-col gap-10">
-        <div className="relative w-fit min-w-50 border border-black rounded-lg p-5 pt-10 mx-auto text-center">
-          <div className="absolute px-2 bg-white -top-4 left-1/2 -translate-x-1/2 text-xl font-semibold">
-            Amenities
-          </div>
-          Details for Amenities not found
+        <div className="w-full bg-gray-100 rounded-lg p-5 pt-10 mx-auto text-center">
+          <div className="px-2 text-xl font-semibold">Amenities</div>
+          {location.amenities && location.amenities.length > 0 ? (
+            <ul className="list-disc list-inside text-left">
+              {location.amenities.map((item, i) => (
+                <li key={i}>{item}</li>
+              ))}
+            </ul>
+          ) : (
+            <p>No amenities details provided.</p>
+          )}
         </div>
-        <div className="relative w-fit min-w-50 border border-black rounded-lg p-5 pt-10 mx-auto text-center">
-          <div className="absolute px-2 bg-white -top-4 left-1/2 -translate-x-1/2 text-xl font-semibold">
-            Plugs
+        <div className="bg-gray-100 w-full rounded-lg p-5 pt-10 mx-auto text-center pb-10">
+          <div className="px-2 text-xl font-semibold">Plugs</div>
+          <p className="font-semibold mt-2">
+            {location["Name of the charger"]}
+          </p>
+          <div className="mt-5 flex gap-5 justify-center">
+            {location["Plugs details"].map((item, i) => (
+              <div key={i} className="flex bg-white p-5 shadow rounded-lg">
+                <RiChargingPile2Fill className="text-6xl" />
+
+                <div className="text-left font-semibold ml-5">
+                  {item.physicalReference} <br />
+                  Max Output Power {item.maxOutputPower} KW <br />
+                  Charger Status : {item.connectorStatus}
+                </div>
+              </div>
+            ))}
           </div>
-          Details for Amenities not found
         </div>
         <div className="relative w-fit min-w-50 border border-black rounded-lg p-5 pt-10 mx-auto text-center">
           <div className="absolute px-2 bg-white -top-4 left-1/2 -translate-x-1/2 text-xl font-semibold">

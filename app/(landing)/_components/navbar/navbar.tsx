@@ -9,7 +9,7 @@ export default function LandingNavbar() {
   const [isNav, setIsNav] = useState(false);
 
   return (
-    <div className="md:flex justify-between bg-white shadow-xs sticky top-0 items-center px-5 pl-0 md:pl-5 z-100 ">
+    <div className="md:flex relative justify-between bg-white shadow-xs sticky top-0 items-center px-5 pl-0 md:pl-5 z-100 ">
       <div className="flex justify-between items-center">
         <Link href="/">
           <div className="md:px-5 md:ml-5 flex items-center bg-white gap-2 pr-10">

@@ -7,11 +7,13 @@ import {
   useLoadScript,
 } from "@react-google-maps/api";
 import { renderToStaticMarkup } from "react-dom/server";
-import { RiWaterFlashFill } from "react-icons/ri";
+import { RiChargingPile2Fill, RiWaterFlashFill } from "react-icons/ri";
 import { useState, useRef, useEffect } from "react";
 import { useData } from "../context/datacontext";
-import { TbGpsFilled } from "react-icons/tb";
+
 import { Location } from "@/app/(landing)/_components/types/location";
+import { TbGpsFilled } from "react-icons/tb";
+import Link from "next/link";
 
 const DEFAULT_CENTER = { lat: 27.7172, lng: 85.324 }; // Kathmandu fallback
 
@@ -116,7 +118,7 @@ export default function HomeMap() {
 
   const customIcon = (available: boolean) =>
     `data:image/svg+xml;charset=UTF-8,${encodeURIComponent(
-      customIconSVG(available ? "green" : "red")
+      customIconSVG(available ? "blue" : "red")
     )}`;
 
   return (
@@ -158,42 +160,68 @@ export default function HomeMap() {
             onCloseClick={() => setSelected(null)}
             options={{ disableAutoPan: true }}
           >
-            <div className="lg:w-[20vw]">
-              <h2 className="font-semibold text-xl text-center">
-                {selected["Name of the location"]}
-              </h2>
+            <div>
+              <div className="flex justify-between px-5 gap-5">
+                <h2 className="font-semibold text-base text-center">
+                  {selected["Name of the location"]}
+                </h2>
+                <div className="flex justify-center items-center gap-2 ">
+                  <div
+                    className={`block w-2 h-2 rounded-full ${
+                      selected.available ? "bg-blue-500" : "bg-red-500"
+                    }`}
+                  />
+                  {selected.available ? "Available" : "Unavailable"}
+                </div>
+              </div>
               <hr className="border border-gray-100 my-5" />
-              <div className="text-center leading-6 flex gap-5 justify-between items-center px-5">
-                <div>
-                  <p className="text-base">
-                    {selected.address.street1}
-                    {selected.address.street2 &&
-                      `, ${selected.address.street2}`}
-                  </p>
-                  <p>
-                    {selected.address.city}, {selected.address.state}
-                  </p>
+              <div className="flex">
+                <div className="flex-1">
+                  <div className="leading-6 gap-5 justify-between items-center px-5 flex flex-col">
+                    <div className="flex-1">
+                      <p className="text-sm ">
+                        {selected.address.street1}
+                        <br />
+                        {selected.address.street2}
+                      </p>
+                      <p>
+                        {selected.address.city}, <br /> {selected.address.state}
+                      </p>
+                    </div>
+                    <Link
+                      href={`https://www.google.com/maps/dir/?api=1&destination=${selected["Maps details"].coordinates[0]},${selected["Maps details"].coordinates[1]}`}
+                      target="_blank"
+                      rel="noopener noreferrer"
+                      className="flex gap-3 justify-center items-center bg-black text-white mt-5 px-5 py-2 hover:scale-95 transition-all duration-500"
+                    >
+                      <TbGpsFilled className="text-lg" />
+                      Get Direction
+                    </Link>
+                  </div>
                 </div>
-                <div>
-                  <TbGpsFilled className="text-4xl hover:scale-110 transition-all duration-500" />
+                <div className=" text-center bg-gray-100 shadow p-2 rounded-lg font-semibold">
+                  {selected["Name of the charger"]} Charger
+                  {selected["Plugs details"].map((item, i) => (
+                    <div
+                      key={i}
+                      className="mt-5 bg-white shadow-lg flex rounded-lg p-2  font-semibold"
+                    >
+                      <div className="flex flex-col justify-center py-2 px-5">
+                        {item.physicalReference}
+                        <RiChargingPile2Fill className="text-4xl" />
+                        {item.maxOutputPower} KW
+                      </div>
+                      <div className=" px-5 font-normal text-center flex-1 justify-center items-center flex flex-col gap-5">
+                        Status
+                        <br />
+                        {item.connectorStatus}
+                      </div>
+                    </div>
+                  ))}
                 </div>
               </div>
-              <div className="w-full text-center p-5 font-semibold text-base">
+              <div className="w-full text-center p-5 font-semibold">
                 Contact No. {selected["Contact No"]}
-              </div>
-              {selected["Name of the charger"]}
-              <div>
-                {selected["Plugs details"].map((item, i) => (
-                  <div key={i}>plug</div>
-                ))}
-              </div>
-              <div className="flex justify-center items-center gap-2 mt-2">
-                <div
-                  className={`block w-2 h-2 rounded-full ${
-                    selected.available ? "bg-green-500" : "bg-red-500"
-                  }`}
-                />
-                Status: {selected.available ? "Available" : "Unavailable"}
               </div>
             </div>
           </InfoWindow>
