@@ -84,7 +84,9 @@ export default function Locations() {
             </p>
             <p className="text-xs font-light">
               {distance
-                ? `${distance.toFixed(2)} KM Away from your current location.`
+                ? `Approx. ${distance.toFixed(
+                    2
+                  )} KM Away from your current location.`
                 : "Distance unavailable"}
             </p>
           </div>
@@ -100,25 +102,37 @@ export default function Locations() {
         </div>
       </div>
 
-      <div className="mt-10 max-w-[1366px] mx-auto p-5 flex flex-col gap-10">
-        <div className="w-full bg-gray-100 rounded-lg p-5 pt-10 mx-auto text-center">
-          <div className="px-2 text-xl font-semibold">Amenities</div>
-          {location.amenities && location.amenities.length > 0 ? (
-            <ul className="list-disc list-inside text-left">
-              {location.amenities.map((item, i) => (
-                <li key={i}>{item}</li>
-              ))}
-            </ul>
-          ) : (
-            <p>No amenities details provided.</p>
-          )}
+      <div
+        className="mt-10 max-w-[1366px] mx-auto p-5 grid md:grid-cols-3 
+       gap-10"
+      >
+        <div className="col-span-2 flex flex-col gap-5 ">
+          <div className="w-full bg-gray-100 rounded-lg flex-1 p-5 pt-10 mx-auto text-center">
+            <div className="px-2 text-xl font-semibold">Amenities</div>
+            {location.amenities && location.amenities.length > 0 ? (
+              <ul className="list-disc list-inside text-left">
+                {location.amenities.map((item, i) => (
+                  <li key={i}>{item}</li>
+                ))}
+              </ul>
+            ) : (
+              <p>No amenities details provided.</p>
+            )}
+          </div>
+          <div className="bg-gray-100 w-full rounded-lg gap-5 justify-center p-5 pt-10 mx-auto  flex items-center">
+            <FaMapLocationDot className="text-6xl" />
+            <div>
+              {location.address.street1}, {location.address.street2} <br />
+              {location.address.city} <br />
+              {location.address.state}
+            </div>
+          </div>
         </div>
-        <div className="bg-gray-100 w-full rounded-lg p-5 pt-10 mx-auto text-center pb-10">
-          <div className="px-2 text-xl font-semibold">Plugs</div>
+        <div className="bg-gray-100 w-full rounded-lg p-5 pt-10 mx-auto text-center pb-10 ">
           <p className="font-semibold mt-2">
             {location["Name of the charger"]}
           </p>
-          <div className="mt-5 flex gap-5 justify-center">
+          <div className="mt-5 flex flex-col gap-5 justify-center">
             {location["Plugs details"].map((item, i) => (
               <div key={i} className="flex bg-white p-5 shadow rounded-lg">
                 <RiChargingPile2Fill className="text-6xl" />
@@ -131,12 +145,6 @@ export default function Locations() {
               </div>
             ))}
           </div>
-        </div>
-        <div className="relative w-fit min-w-50 border border-black rounded-lg p-5 pt-10 mx-auto text-center">
-          <div className="absolute px-2 bg-white -top-4 left-1/2 -translate-x-1/2 text-xl font-semibold">
-            Location
-          </div>
-          Details for Amenities not found
         </div>
       </div>
     </div>

@@ -31,8 +31,12 @@ export default function Chargers() {
                 href={`/${location._id}`}
                 className="bg-gray-100 block px-5 py-5 pt-10 hover:scale-95 transition-all duration-500 hover:bg-black hover:text-white"
               >
-                {location["Name of the location"]} -{" "}
-                {location["Name of the charger"]}
+                <p className="font-semibold">
+                  {location["Name of the location"]} -{" "}
+                  {location["Name of the charger"]}
+                </p>
+                {location.address.street1}, {location.address.street1} <br />
+                {location.address.city}
               </Link>
               <div
                 className={`px-5 pt-2 absolute top-0 group-hover:scale-95 transition-all duration-500 rounded-b-lg right-2 w-40 text-white ${

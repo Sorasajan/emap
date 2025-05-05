@@ -14,6 +14,7 @@ import { useData } from "../context/datacontext";
 import { Location } from "@/app/(landing)/_components/types/location";
 import { TbGpsFilled } from "react-icons/tb";
 import Link from "next/link";
+import { FaExternalLinkAlt } from "react-icons/fa";
 
 const DEFAULT_CENTER = { lat: 27.7172, lng: 85.324 }; // Kathmandu fallback
 
@@ -189,17 +190,24 @@ export default function HomeMap() {
                       </p>
                     </div>
                     <Link
+                      href={`/${selected._id}`}
+                      className="flex gap-3 w-full justify-center items-center bg-black text-white mt-5 px-5 py-2 hover:scale-95 transition-all duration-500"
+                    >
+                      <FaExternalLinkAlt className="text-lg" />
+                      Get Direction
+                    </Link>
+                    <Link
                       href={`https://www.google.com/maps/dir/?api=1&destination=${selected["Maps details"].coordinates[0]},${selected["Maps details"].coordinates[1]}`}
                       target="_blank"
                       rel="noopener noreferrer"
-                      className="flex gap-3 justify-center items-center bg-black text-white mt-5 px-5 py-2 hover:scale-95 transition-all duration-500"
+                      className="flex gap-3 w-full justify-center items-center bg-black text-white px-5 py-2 hover:scale-95 transition-all duration-500"
                     >
                       <TbGpsFilled className="text-lg" />
-                      Get Direction
+                      Get Details
                     </Link>
                   </div>
                 </div>
-                <div className=" text-center bg-gray-100 shadow p-2 rounded-lg font-semibold">
+                <div className=" text-center bg-gray-100 shadow p-2 pt-5 rounded-lg font-semibold">
                   {selected["Name of the charger"]} Charger
                   {selected["Plugs details"].map((item, i) => (
                     <div
