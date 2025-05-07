@@ -64,7 +64,7 @@ export default function LocationBox() {
         className={`right-0 p-5 z-1 flex gap-5 items-center ${
           sidebar
             ? "sticky top-0 bg-white"
-            : "absolute bottom-1/2 translate-y-1/2 right-0 rounded-l-full h-50 bg-black text-white"
+            : "sticky top-0 bg-white md:absolute md:bottom-1/2 md:translate-y-1/2 md:right-0 md:rounded-l-full md:h-50 md:bg-black md:text-white"
         }`}
       >
         {sidebar ? (
@@ -74,16 +74,23 @@ export default function LocationBox() {
             autoComplete="off"
             onChange={handleChange} // Change to onChange for immediate search
           />
-        ) : null}
+        ) : (
+          <input
+            className="block md:hidden w-full border border-black rounded-lg p-2 bg-white flex-1"
+            placeholder="Search Location"
+            autoComplete="off"
+            onChange={handleChange} // Change to onChange for immediate search
+          />
+        )}
 
         {sidebar ? (
           <FaGripLinesVertical
-            className="text-2xl cursor-pointer"
+            className="hidden md:block text-2xl cursor-pointer"
             onClick={() => setSidebar(false)}
           />
         ) : (
           <PiSlideshowFill
-            className="text-3xl cursor-pointer"
+            className="hidden md:block text-3xl cursor-pointer"
             onClick={() => setSidebar(true)}
           />
         )}
@@ -91,7 +98,7 @@ export default function LocationBox() {
 
       <div
         className={`p-5 text-sm overflow-x-auto lg:flex-col gap-5 ${
-          sidebar ? "flex" : "hidden"
+          sidebar ? "flex" : "flex md:hidden"
         }`}
       >
         {filteredLocations.map((item, i) => {

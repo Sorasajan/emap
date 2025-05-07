@@ -93,6 +93,11 @@ export default function HomeMap() {
     }
   }, [selectedMarker]);
 
+  const handleClose = () => {
+    setSelectedMarker(null);
+    setSelected(null);
+  };
+
   if (!isLoaded) return <div>Loading...</div>;
 
   const customIconSVG = (color: string) =>
@@ -158,7 +163,7 @@ export default function HomeMap() {
               lat: selected["Maps details"].coordinates[0],
               lng: selected["Maps details"].coordinates[1],
             }}
-            onCloseClick={() => setSelected(null)}
+            onCloseClick={handleClose}
             options={{ disableAutoPan: true }}
           >
             <div>
@@ -176,7 +181,7 @@ export default function HomeMap() {
                 </div>
               </div>
               <hr className="border border-gray-100 my-5" />
-              <div className="flex">
+              <div className="flex flex-col md:flex-row">
                 <div className="flex-1">
                   <div className="leading-6 gap-5 justify-between items-center px-5 flex flex-col">
                     <div className="flex-1">
@@ -194,7 +199,7 @@ export default function HomeMap() {
                       className="flex gap-3 w-full justify-center items-center bg-black text-white mt-5 px-5 py-2 hover:scale-95 transition-all duration-500"
                     >
                       <FaExternalLinkAlt className="text-lg" />
-                      Get Direction
+                      Get Details
                     </Link>
                     <Link
                       href={`https://www.google.com/maps/dir/?api=1&destination=${selected["Maps details"].coordinates[0]},${selected["Maps details"].coordinates[1]}`}
@@ -203,7 +208,7 @@ export default function HomeMap() {
                       className="flex gap-3 w-full justify-center items-center bg-black text-white px-5 py-2 hover:scale-95 transition-all duration-500"
                     >
                       <TbGpsFilled className="text-lg" />
-                      Get Details
+                      Get Direction
                     </Link>
                   </div>
                 </div>
