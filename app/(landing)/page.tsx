@@ -7,7 +7,7 @@ export default function LandingHome() {
       <div className="lg:flex-1">
         <HomeMap />
       </div>
-      <div className="overflow-y-auto bg-gray-100 lg:h-[calc(100vh-70px)]">
+      <div className="overflow-y-auto bg-gray-100 lg:h-[calc(100vh-140px)]">
         <LocationBox />
       </div>
     </div>
