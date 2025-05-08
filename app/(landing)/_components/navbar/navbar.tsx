@@ -13,8 +13,7 @@ export default function LandingNavbar() {
       <div className="flex justify-between items-center">
         <Link href="/">
           <div className="md:px-5 md:ml-5 flex items-center bg-white gap-2 pr-10 p-5">
-            <Image src={logo} alt="heritage" height={65} />
-            
+            <Image src={logo} alt="heritage" height={50} />
           </div>
         </Link>
         <IoMenuSharp
