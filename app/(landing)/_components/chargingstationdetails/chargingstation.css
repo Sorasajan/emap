@@ -1,0 +1,97 @@
+
+
+
+.chargingnotavailable {
+    fill: url(#linear-gradient);
+  }
+
+  .chargingavailable {
+    fill: url(#linear-gradient-4);
+  }
+
+  .cls-1, .cls-2, .cls-3, .cls-4, .cls-5, .cls-6, .cls-7, .cls-8, .cls-9, .cls-10, .cls-11, .cls-12, .cls-13, .cls-14, .cls-15, .cls-16, .cls-17, .cls-18 {
+    stroke-width: 0px;
+  }
+
+  .cls-2 {
+    fill: #f3f3f3;
+  }
+
+  .cls-3 {
+    fill: #c9c3b8;
+  }
+
+  .cls-4 {
+    fill: #eae6da;
+  }
+
+  .cls-5 {
+    fill: #ececec;
+  }
+
+  .cls-19 {
+    isolation: isolate;
+  }
+
+  .cls-6 {
+    fill: #e5e5e5;
+  }
+
+  .cls-7 {
+    fill: #2b2b2d;
+  }
+
+  .cls-8, .cls-11 {
+    fill: #b5aea3;
+  }
+
+  .cls-9 {
+    opacity: .6;
+  }
+
+  .chargingnotavailablecls-9, .charginnotavailablecls-15 {
+    fill: #ff0000;
+  }
+
+  .chargingavailablecls-9, .chargingavailablecls-15 {
+    fill: #00e704;
+  }
+
+  .cls-10 {
+    fill: #fff;
+  }
+
+  .cls-11 {
+    opacity: .7;
+  }
+
+  .cls-12 {
+    fill: url(#linear-gradient-2);
+  }
+
+  .chargingnotavailablecls-13 {
+    fill: #b22e2e;
+  }
+
+  .chargingavailablecls-13 {
+    fill: #63b22e;
+  }
+
+  .cls-14 {
+    fill: #48484d;
+  }
+
+  .chargingnotavailablecls-16 {
+    fill: url(#linear-gradient-3);
+  }
+
+  .chargingavailablecls-16 {
+    fill: url(#linear-gradient-5);
+  }
+  .cls-17 {
+    fill: #cbcbcb;
+  }
+
+  .cls-18 {
+    fill: #b72196;
+  }

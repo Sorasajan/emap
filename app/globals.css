@@ -1,1 +1,14 @@
 @import "tailwindcss";
+
+.Charging, .Disconnected, .Preparing {
+    background-color: rgb(255, 213, 0);
+}
+
+.Not, .Faulted {
+    background-color: rgb(255, 191, 191) !important;
+}
+
+.Available, .Finishing {
+    background-color: rgb(150, 254, 150);
+}
+

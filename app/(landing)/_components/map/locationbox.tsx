@@ -59,7 +59,7 @@ export default function LocationBox() {
   };
 
   return (
-    <div className={sidebar ? "w-100" : "w-0 overflow-hidden"}>
+    <div className={sidebar ? "w-100" : "w-full md:w-0 overflow-hidden"}>
       <div
         className={`right-0 p-5 z-1 flex gap-5 items-center ${
           sidebar

@@ -217,7 +217,7 @@ export default function HomeMap() {
                   {selected["Plugs details"].map((item, i) => (
                     <div
                       key={i}
-                      className="mt-5 bg-white shadow-lg flex rounded-lg p-2  font-semibold"
+                      className={`mt-5 shadow-lg flex rounded-lg p-2  font-semibold ${item.connectorStatus}`}
                     >
                       <div className="flex flex-col justify-center py-2 px-5">
                         {item.physicalReference}

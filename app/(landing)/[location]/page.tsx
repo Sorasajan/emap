@@ -7,6 +7,7 @@ import Image from "next/image";
 import { useEffect, useState } from "react";
 import { FaParking, FaRestroom, FaToilet, FaWifi } from "react-icons/fa";
 import { GrRestaurant } from "react-icons/gr";
+import ChargingStation from "@/app/(landing)/_components/chargingstationdetails/chargingstation"
 import {
   MdLocalCarWash,
   MdLocalGasStation,
@@ -103,11 +104,41 @@ export default function Locations() {
       </div>
 
       <div
-        className="mt-10 max-w-[1366px] mx-auto p-5 grid md:grid-cols-3 
+        className="mt-10 max-w-[1366px] mx-auto p-5 grid md:grid-cols-4 
        gap-10"
       >
-        <div className="col-span-2 flex flex-col gap-5 ">
-          <div className="w-full bg-gray-100 rounded-lg flex-1 p-5 pt-10 mx-auto text-center">
+        <div className="col-span-2 flex gap-5 ">
+
+<div className="grid justify-center items-center w-fit text-center gap-5">
+<p className="font-semibold mt-2">
+            {location["Name of the charger"]}
+          </p>
+        <ChargingStation height="h-100" status={location.available}/>
+        <div className={`${location.available ? "bg-green-500" : "bg-red-500"} px-5 py-2 text-white`}>
+          {location.available ? "Available" : "Not Available"}
+        </div>
+</div>
+<div className="flex-1">
+<p className="font-semibold mt-2 text-center">
+            Plugs
+          </p>
+          <div className="mt-5 flex flex-col gap-5 p-5 h-full ">
+            {location["Plugs details"].map((item, i) => (
+              <div key={i} className={`flex ${item.connectorStatus} p-5 shadow rounded-lg`}>
+                <RiChargingPile2Fill className="text-6xl" />
+
+                <div className="text-left font-semibold ml-5">
+                  {item.physicalReference} <br />
+                  Max Output Power {item.maxOutputPower} KW <br />
+                  Charger Status : {item.connectorStatus}
+                </div>
+              </div>
+            ))}
+          </div>
+</div>
+        </div>
+        <div className="col-span-2 bg-gray-100 w-full rounded-lg p-5 pt-10 mx-auto text-center pb-10 ">
+          <div className="w-full rounded-lg flex-1 p-5 pt-10 mx-auto text-center">
             <div className="px-2 text-xl font-semibold">Amenities</div>
             {location.amenities && location.amenities.length > 0 ? (
               <ul className="list-disc list-inside text-left">
@@ -127,25 +158,12 @@ export default function Locations() {
               {location.address.state}
             </div>
           </div>
-        </div>
-        <div className="bg-gray-100 w-full rounded-lg p-5 pt-10 mx-auto text-center pb-10 ">
-          <p className="font-semibold mt-2">
-            {location["Name of the charger"]}
-          </p>
-          <div className="mt-5 flex flex-col gap-5 justify-center">
-            {location["Plugs details"].map((item, i) => (
-              <div key={i} className="flex bg-white p-5 shadow rounded-lg">
-                <RiChargingPile2Fill className="text-6xl" />
 
-                <div className="text-left font-semibold ml-5">
-                  {item.physicalReference} <br />
-                  Max Output Power {item.maxOutputPower} KW <br />
-                  Charger Status : {item.connectorStatus}
-                </div>
-              </div>
-            ))}
-          </div>
+          
         </div>
+      </div>
+      <div>
+        
       </div>
     </div>
   );
