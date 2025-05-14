@@ -5,7 +5,13 @@ import { useData } from "../_components/context/datacontext";
 import details from "@/public/details.jpg";
 import Image from "next/image";
 import { useEffect, useState } from "react";
-import { FaParking, FaRestroom, FaToilet, FaWifi } from "react-icons/fa";
+import {
+  FaParking,
+  FaPhone,
+  FaRestroom,
+  FaToilet,
+  FaWifi,
+} from "react-icons/fa";
 import { GrRestaurant } from "react-icons/gr";
 import ChargingStation from "@/app/(landing)/_components/chargingstationdetails/chargingstation";
 import {
@@ -13,8 +19,9 @@ import {
   MdLocalGasStation,
   MdLocalHotel,
 } from "react-icons/md";
-import { FaMapLocationDot } from "react-icons/fa6";
+import { FaMapLocationDot, FaPhoneFlip } from "react-icons/fa6";
 import { RiChargingPile2Fill } from "react-icons/ri";
+import { BiPhone } from "react-icons/bi";
 
 function getDistanceFromLatLonInKm(
   lat1: number,
@@ -161,6 +168,14 @@ export default function Locations() {
               {location.address.city} <br />
               {location.address.state}
             </div>
+          </div>
+          <div className="w-full rounded-lg flex-1 p-5 pt-10 mx-auto text-center">
+            <div className="px-2 flex justify-center items-center gap-2 text-xl font-semibold pb-5">
+              <BiPhone className="text-xl" /> Contact
+            </div>
+            Location No. : {location["Contact No"]}
+            <br />
+            App Hotline No.: {location["App Hotline Number"]}
           </div>
         </div>
       </div>
