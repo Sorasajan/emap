@@ -78,11 +78,11 @@ export default function HomeMap() {
   useEffect(() => {
     if (selectedMarker && mapRef.current) {
       const position = {
-        lat: selectedMarker["Maps details"].coordinates[0],
+        lat: selectedMarker["Maps details"].coordinates[0] + 0.0055,
         lng: selectedMarker["Maps details"].coordinates[1],
       };
 
-      mapRef.current.setZoom(10);
+      mapRef.current.setZoom(16);
       mapRef.current.panTo(position);
 
       setTimeout(() => {

@@ -6,6 +6,7 @@ import { useData } from "../../_components/context/datacontext";
 import Link from "next/link";
 import Image from "next/image";
 import { IoHome } from "react-icons/io5";
+import { GiElectricalSocket } from "react-icons/gi";
 
 export default function Chargers() {
   const params = useParams();
@@ -47,14 +48,30 @@ export default function Chargers() {
               <li key={i} className="relative group">
                 <Link
                   href={`/${location._id}`}
-                  className="bg-gray-100 block px-5 py-5 pt-10 hover:scale-95 transition-all duration-500 hover:bg-gray-200 "
+                  className="bg-gray-100 block flex justify-between px-5 py-5 pt-10 hover:scale-95 hover:rounded-lg  transition-all duration-500 hover:bg-gray-200 "
                 >
-                  <p className="font-semibold">
-                    {location["Name of the location"]} -{" "}
-                    {location["Name of the charger"]}
-                  </p>
-                  {location.address.street1}, {location.address.street1} <br />
-                  {location.address.city}
+                  <div>
+                    <p className="font-semibold">
+                      {location["Name of the location"]} -{" "}
+                      {location["Name of the charger"]}
+                    </p>
+                    {location.address.street1}, {location.address.street1}{" "}
+                    <br />
+                    {location.address.city}
+                  </div>
+                  <div className=" rounded-lg p-2 bg-white shadow">
+                    <p className="font-bold text-center text-xs">Plugs</p>
+                    <div className="text mt-2 flex gap-2 justify-center items-center">
+                      {location["Plugs details"].map((plug, i) => (
+                        <div key={i} className={plug.connectorStatus}>
+                          <GiElectricalSocket
+                            size={25}
+                            className="rounded-full"
+                          />
+                        </div>
+                      ))}
+                    </div>
+                  </div>
                 </Link>
                 <div
                   className={`px-5 py-1 absolute top-0 group-hover:scale-95 text-center transition-all duration-500 rounded-b-lg right-2 w-40 text-white ${
