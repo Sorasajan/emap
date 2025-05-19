@@ -42,11 +42,7 @@ export const DataProvider = ({ children }: DataProviderProps) => {
       setIsError(false);
 
       try {
-        const response = await fetch(url, {
-          headers: {
-            Authorization: `${auth_token}`,
-          },
-        });
+        const response = await fetch("/api/proxy");
 
         if (!response.ok) {
           throw new Error(`Failed to fetch data: ${response.statusText}`);
