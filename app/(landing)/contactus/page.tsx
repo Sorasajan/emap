@@ -30,7 +30,7 @@ export default function ContactUs() {
                   Interested in Heritage Charger! Just pick up the phone to chat
                   with a member of our sales team.
                 </p>
-                <p>980-0-000000</p>
+                <p>9802379500</p>
               </div>
               <div className="w-90 text-center gap-5 bg-green-200 p-10 rounded-lg flex flex-col justify-center items-center">
                 <BiSupport className="text-7xl text-green-400" />
@@ -39,7 +39,7 @@ export default function ContactUs() {
                   Sometimes you need a little help from your friends. Or a
                   Heritage support rep. Don’t worry… we’re here for you.
                 </p>
-                <p>980-0-000000</p>
+                <p>9802379500</p>
               </div>
             </div>
           </div>
@@ -50,44 +50,22 @@ export default function ContactUs() {
         <div className="max-w-[1200px] border border-black mx-auto rounded-lg overflow-hidden md:flex mt-10">
           <div className="bg-green-100 flex-1">
             <iframe
-              src="https://www.google.com/maps/embed?pb=!1m18!1m12!1m3!1d14133.164252316723!2d85.41416692834449!3d27.677397569194202!2m3!1f0!2f0!3f0!3m2!1i1024!2i768!4f13.1!3m3!1m2!1s0x39eb1aae42806ba1%3A0x5449e079404e5e82!2sBhaktapur!5e0!3m2!1sen!2snp!4v1745734416185!5m2!1sen!2snp"
+              src="https://www.google.com/maps/embed?pb=!1m16!1m12!1m3!1d14130.85998993822!2d85.31804159676788!3d27.69520223805825!2m3!1f0!2f0!3f0!3m2!1i1024!2i768!4f13.1!2m1!1sshankhamul%2C%20kmc%2010%20google%20map!5e0!3m2!1sen!2snp!4v1749033658160!5m2!1sen!2snp"
               loading="lazy"
               referrerPolicy="no-referrer-when-downgrade"
               className="w-full h-150"
             ></iframe>
           </div>
           <div
-            className="p-5 px-10 w-80 text-base text-left 'use client';
-
-import React, { createContext, useContext } from 'react';
-import useSWR from 'swr';
-
-const fetcher = (url: string) => fetch(url).then(res => res.json());
-
-const DataContext = createContext<any>(null);
-
-export const DataProvider = ({ children }: { children: React.ReactNode }) => {
-  const { data, error } = useSWR('/api/realtime-data', fetcher, {
-    refreshInterval: 5000, // refresh every 5 seconds
-  });
-
-  return (
-    <DataContext.Provider value={{ data, loading: !error && !data, error }}>
-      {children}
-    </DataContext.Provider>
-  );
-};
-
-export const useData = () => useContext(DataContext);
+            className="p-5 px-10 w-80 text-base text-left 
 flex flex-col justify-center"
           >
-            <p>Address 1</p>
-            <p>Address 2</p>
+            <p>KMC-10, Sankhamul</p>
+
             <p>Kathmandu, Nepal</p>
 
             <p className="font-semibold text-lg mt-10">Contact Number</p>
-            <p>phone no.</p>
-            <p>Landline no.</p>
+            <p>9802379500</p>
           </div>
         </div>
         <p className="mt-10 text-lg">
