@@ -80,7 +80,7 @@ export default function TermsOfService() {
           6. Disclaimer and Limitation of Liability
         </h2>
         <p className="mb-2">
-          We provide our Services "as-is" without warranty. We are not
+          We provide our Services &quot;as-is&quot; without warranty. We are not
           responsible for:
         </p>
         <ul className="list-disc list-inside space-y-1">

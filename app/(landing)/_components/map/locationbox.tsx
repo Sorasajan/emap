@@ -136,7 +136,7 @@ export default function LocationBox() {
                 {item["Name of the charger"]} Charger
               </p>
 
-              {plugs.map((plug: any, i: number) => (
+              {plugs.map((plug, i: number) => (
                 <p
                   key={i}
                   className="flex items-center text-xs justify-between mt-2"

@@ -25,9 +25,6 @@ interface DataProviderProps {
   children: ReactNode;
 }
 
-const url = process.env.NEXT_PUBLIC_API_URL!;
-const auth_token = process.env.NEXT_PUBLIC_AUTH_TOKEN!;
-
 const DataContext = createContext<DataContextType | undefined>(undefined);
 
 export const DataProvider = ({ children }: DataProviderProps) => {

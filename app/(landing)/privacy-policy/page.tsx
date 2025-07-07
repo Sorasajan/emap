@@ -25,10 +25,10 @@ export default function Privacy() {
       <p>
         Your privacy is important to us. This Privacy Policy explains how we
         collect, use, disclose, and safeguard your information when you use our
-        charging station mobile application (the "App") and our webapp (the
-        “weblink”). Your collected information is used to provide and improve
-        the services. By using the App, you agree to the terms outlined in this
-        policy.
+        charging station mobile application (the &quot;App&quot;) and our webapp
+        (the &quot;weblink&quot;). Your collected information is used to provide
+        and improve the services. By using the App, you agree to the terms
+        outlined in this policy.
       </p>
 
       <h1 className="font-semibold text-base mt-5">Information We Collect</h1>
@@ -399,9 +399,9 @@ export default function Privacy() {
       </div>
       <p className="font-semibold">What You Can Do</p>
       <p>
-        While we take significant measures to protect your data, your account's
-        security also depends on your actions. To enhance the protection of your
-        information, we recommend:
+        While we take significant measures to protect your data, your
+        account&apos;s security also depends on your actions. To enhance the
+        protection of your information, we recommend:
       </p>
       <ul className="list-disc list-inside">
         <li>
@@ -537,8 +537,8 @@ export default function Privacy() {
       <p>
         <span className="font-semibold">Website Updates : </span> The most
         current version of this Privacy Policy will always be available on our
-        website, and the "Effective Date" will be clearly marked at the top of
-        the page.
+        website, and the &quot;Effective Date&quot; will be clearly marked at
+        the top of the page.
       </p>
       <h1 className="font-semibold text-base mt-5">Your Continued Use</h1>
       <p>
