@@ -98,7 +98,16 @@ export default function HomeMap() {
     setSelected(null);
   };
 
-  if (!isLoaded) return <div>Loading...</div>;
+  if (!isLoaded)
+    return (
+      <div className="h-full w-full flex justify-center items-center">
+        <div className="flex space-x-2 mt-5">
+          <div className="w-3 h-3 bg-black/40 rounded-full animate-[bounce_1.4s_infinite_ease-in-out]"></div>
+          <div className="w-3 h-3 bg-black/50 rounded-full animate-[bounce_1.4s_infinite_ease-in-out] [animation-delay:0.2s]"></div>
+          <div className="w-3 h-3 bg-black/60 rounded-full animate-[bounce_1.4s_infinite_ease-in-out] [animation-delay:0.4s]"></div>
+        </div>
+      </div>
+    );
 
   const customIconSVG = (color: string) =>
     renderToStaticMarkup(

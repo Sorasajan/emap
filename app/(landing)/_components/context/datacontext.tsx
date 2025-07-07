@@ -1,5 +1,5 @@
 "use client";
-
+import logo from "@/public/heritage.svg";
 import React, {
   createContext,
   useContext,
@@ -9,6 +9,7 @@ import React, {
   useEffect,
 } from "react";
 import { Location } from "@/app/(landing)/_components/types/location";
+import Image from "next/image";
 
 interface DataContextType {
   data: Location[] | null;
@@ -88,8 +89,24 @@ export const DataProvider = ({ children }: DataProviderProps) => {
     [data, isLoading, isError, selectedMarker, searchLocation]
   );
 
-  if (isLoading) return <div>Loading...</div>;
-  if (isError) return <div>Error fetching data</div>;
+  if (isLoading)
+    return (
+      <div className="flex w-screen h-screen flex-col justify-center items-center">
+        <Image src={logo} alt="heritage" height={100} />
+        <div className="flex space-x-2 mt-5">
+          <div className="w-3 h-3 bg-black/40 rounded-full animate-[bounce_1.4s_infinite_ease-in-out]"></div>
+          <div className="w-3 h-3 bg-black/50 rounded-full animate-[bounce_1.4s_infinite_ease-in-out] [animation-delay:0.2s]"></div>
+          <div className="w-3 h-3 bg-black/60 rounded-full animate-[bounce_1.4s_infinite_ease-in-out] [animation-delay:0.4s]"></div>
+        </div>
+      </div>
+    );
+  if (isError)
+    return (
+      <div className="flex w-screen h-screen flex-col justify-center items-center">
+        <Image src={logo} alt="heritage" height={100} />
+        <div className="flex space-x-2 mt-5">Error Fetching Data</div>
+      </div>
+    );
   if (!data) return <div>No data available</div>;
 
   return (
