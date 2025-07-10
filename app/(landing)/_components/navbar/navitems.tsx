@@ -1,7 +1,7 @@
 import Link from "next/link";
 import { useData } from "../context/datacontext";
 import { MdArrowDropDownCircle } from "react-icons/md";
-import React from "react";
+import React, { useState } from "react";
 import { Location } from "@/app/(landing)/_components/types/location";
 
 interface NavItemsProps {
@@ -14,6 +14,7 @@ interface NavItem {
 }
 
 export default function NavItems({ isNav }: NavItemsProps) {
+  const [dropdownActive, isDropdownActive] = useState(false);
   const { data } = useData();
   const locations: Location[] = Array.isArray(data) ? data : [];
 
@@ -42,17 +43,24 @@ export default function NavItems({ isNav }: NavItemsProps) {
         <div className="relative group">
           <button
             type="button"
-            className="flex gap-2 items-center py-2 md:px-5 font-semibold group-hover:text-green-600 group-hover:border-b border-green-500 transition-colors"
+            onClick={() => isDropdownActive(!dropdownActive)}
+            className="flex w-full gap-2 items-center py-2 md:px-5 group-hover:cursor-pointer font-semibold group-hover:text-green-600 group-hover:border-b border-green-500 transition-colors"
             aria-haspopup="true"
             aria-expanded="false"
             aria-controls="locations-dropdown"
           >
             Locations
-            <MdArrowDropDownCircle className="text-lg group-hover:rotate-180 transition-transform duration-300" />
+            <MdArrowDropDownCircle
+              className={`text-lg ${
+                dropdownActive ? "" : "rotate-180"
+              } transition-transform duration-300`}
+            />
           </button>
           <div
             id="locations-dropdown"
-            className="absolute top-full left-0 w-52 bg-gray-200 shadow-md overflow-auto max-h-100 opacity-0 group-hover:opacity-100 pointer-events-none group-hover:pointer-events-auto transition-all duration-300 z-10"
+            className={`md:absolute top-full left-0 w-52 md:bg-gray-200 md:shadow-md overflow-auto   ${
+              dropdownActive ? "max-h-0  " : "max-h-100"
+            } overflow-hidden group-hover:opacity-100 transition-all duration-300 z-10`}
             role="menu"
           >
             {uniqueLocations.map((item, index) => (
