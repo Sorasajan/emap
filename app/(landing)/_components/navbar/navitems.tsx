@@ -59,8 +59,8 @@ export default function NavItems({ isNav }: NavItemsProps) {
           <div
             id="locations-dropdown"
             className={`md:absolute top-full left-0 w-52 md:bg-gray-200 md:shadow-md overflow-auto   ${
-              dropdownActive ? "max-h-0  " : "max-h-100"
-            } overflow-hidden group-hover:opacity-100 transition-all duration-300 z-10`}
+              dropdownActive ? "max-h-100  " : "max-h-0"
+            } overflow-hidden  transition-all duration-300 z-10`}
             role="menu"
           >
             {uniqueLocations.map((item, index) => (
