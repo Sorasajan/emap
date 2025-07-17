@@ -1,7 +1,7 @@
 {
   "rewrites": [
     {
-      "source": "/console",
+      "source": "console.heritagechargepoint.com",
       "destination": "http://3.109.209.16"
     }
   ]
