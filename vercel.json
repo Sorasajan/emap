@@ -1,0 +1,8 @@
+{
+  "rewrites": [
+    {
+      "source": "/console",
+      "destination": "http://3.109.209.16"
+    }
+  ]
+}
