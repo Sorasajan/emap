@@ -17,7 +17,7 @@ export default function MainFooter() {
         />
 
         <div>
-          <h2 className="text-2xl font-bold">Heritage Charging Point</h2>
+          <h2 className="text-2xl font-bold">Heritage Charge Point</h2>
           <p className="mt-2 max-w-md leading-relaxed">
             With over <strong>100+ charging stations</strong> across Nepal,
             Heritage ensures your electric vehicle is always ready to go.
