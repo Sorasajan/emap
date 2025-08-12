@@ -39,7 +39,7 @@ export default function ContactUs() {
                   Sometimes you need a little help from your friends. Or a
                   Heritage support rep. Don’t worry… we’re here for you.
                 </p>
-                <p>980237502</p>
+                <p>9802379502</p>
               </div>
             </div>
           </div>
